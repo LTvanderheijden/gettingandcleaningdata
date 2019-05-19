@@ -1,0 +1,108 @@
+---
+title: "CodeBook.md."
+author: "Lisa van der Heijden"
+date: "19-5-2019"
+output: html_document
+---
+## Introduction 
+This is the Code Book to the run.analysis.R script. The run.analysis.R script preforms data cleaning of the UCI HAR dataset. This is the peer-graded assigment of the getting and cleaning data course of John Hopkins University. 
+
+## The raw data
+The raw data is the UCI HAR dataset. This dataset contains measurements of 30 volunteers doing 6 different activities while wearing a smartphone (Samsung Galaxy S II) on the waist. The 6 activities were: 
+1. WALKING
+2. WALKING_UPSTAIRS
+3. WALKING_DOWNSTAIRS
+4. SITTING 
+5. STANDING 
+6. LAYING
+
+Using its embedded accelerometer and gyroscope, the 3-axial linear acceleration and 3-axial angular velocity was captured at a constant rate of 50Hz. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The measurements from the accelerometer and gyrocope are 3-axial raw signals called X, Y, and Z. The time domain signals (prefix 't' to denote time) were captured at a constant rate of 50 Hz. Then they were filtered using a median filter and a 3rd order low pass Butterworth filter with a corner frequency of 20 Hz to remove noise. Similarly, the acceleration signal was then separated into body and gravity acceleration signals (tBodyAcc-XYZ and tGravityAcc-XYZ) using another low pass Butterworth filter with a corner frequency of 0.3 Hz. 
+
+Subsequently, the body linear acceleration and angular velocity were derived in time to obtain Jerk signals (tBodyAccJerk-XYZ and tBodyGyroJerk-XYZ). Also the magnitude of these three-dimensional signals were calculated using the Euclidean norm (tBodyAccMag, tGravityAccMag, tBodyAccJerkMag, tBodyGyroMag, tBodyGyroJerkMag). Finally a Fast Fourier Transform (FFT) was applied to some of these signals producing fBodyAcc-XYZ, fBodyAccJerk-XYZ, fBodyGyro-XYZ, fBodyAccJerkMag, fBodyGyroMag, fBodyGyroJerkMag. (Note the 'f' to indicate frequency domain signals). 
+
+These signals were used to calculate as set of variables: 
+mean(): Mean value
+std(): Standard deviation
+mad(): Median absolute deviation 
+max(): Largest value in array
+min(): Smallest value in array
+sma(): Signal magnitude area
+energy(): Energy measure. Sum of the squares divided by the number of values. 
+iqr(): Interquartile range 
+entropy(): Signal entropy
+arCoeff(): Autorregresion coefficients with Burg order equal to 4
+correlation(): correlation coefficient between two signals
+maxInds(): index of the frequency component with largest magnitude
+meanFreq(): Weighted average of the frequency components to obtain a mean frequency
+skewness(): skewness of the frequency domain signal 
+kurtosis(): kurtosis of the frequency domain signal 
+bandsEnergy(): Energy of a frequency interval within the 64 bins of the FFT of each window.
+angle(): Angle between to vectors.
+
+## The data cleaning
+The data cleaning was performed in several steps. 
+
+1. Download the dataset
+Dataset downloaded and extracted under the folder called UCI HAR Dataset
+
+2. The files with the data of the training and test dataset were read and assigned to variables
++ train_labels <- y_train.txt 7352 rows, 1 column
+  contains train data of activities' code labels
+
++ train_data <- X_train.txt 7352 rows, 561 columns
+  contains recorded features of the train data
+
++ train_id <- subject_train.txt 7352 rows, 1 column
+  contains subject id's for 21/30 of the volunteer subjects observed
+
++ features <- features.txt 561 rows, 2 columns
+  the features selelected for this database come from the accelerometer and gyroscope 3-axial raw signals
+
++ test_labels <- y_test.txt 2947 rows, 1 column
+  contains the test data of activities' code labels 
+
++ test_data <- X_test.txt 2947 rows, 561 columns
+  contains recorded features of the test data
+
++ test_id <- subject_test.txt 2947 rows, 1 column
+  contains the subject id's for 9/30 of the volunteers observed
+  
++ activity_names <- activity_labels.txt 6 rows, 2 columns
+  List of activities performed and their labels 
+
+3. Merging of the training and test datasets to create on dataset
++ train (7352 rows and 563 columns) is created by merging train_id, train_labels and train_data using the data.frame() function
+
++ test (2947 rows and 563 columns) is created by merging test_id, test_labels, test_data using the data.frame()
+function 
+
++ dat (10299 rows, 563 columns) is created my merging test and train using the rbind() function 
+
+4. Extracts only the measurements on the mean and standard deviation for each measurement
+The grep() function was used to subset only the columns: subject, activities and the measurements on the mean and
+standard deviation (std) for each measurements. 
+
+5. Use descriptive activity names to name the activities in the dataset
+activity_names was assigned to the activity column of dat
+
+6. Appropriately label the dataset with descriptive variable names
++ All t's at the start of the column names was replaced by time
++ All Acc in the column names was replaced by Acceloremeter
++ All Gyro in the column names was replaced by Gyroscope
++ All -mean in the column names was replaced by MEAN
++ All -std in the column names was replaced by STD
++ All Mag in the column names was replaced by Magnitude
++ All f's at the start of the column names was replaced by frequency
++ All BodyBody in the column names was replaced by Body
++ All Freq in the column names was replaced by frequency 
+
+It was chosen to keep captals in the column names to make it more readable. 
+
+7. Create a second, idependent tidy dataset with the average of each variable for each activity and each subject
++ tidydata (180 rows, 81 columns) is created by summarizing dat taking the means of each variable for each activity and subject using group_by() and summarise_all() function from the dplyr package. 
++ tidydata was exported into tidydata.txt file
+
+
+

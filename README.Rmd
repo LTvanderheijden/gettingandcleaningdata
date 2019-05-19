@@ -1,0 +1,23 @@
+---
+title: "README.md"
+author: "Lisa van der Heijden"
+date: "19-5-2019"
+output: html_document
+---
+# Peer-graded assigment: Getting and cleaning data course project
+This assigment is an assigment from the getting and cleaning data course of John Hopkins Univesity. This repository contains the instructions on how to run analysis on the Human Activity recognition dataset. 
+
+# Dataset
+Human Activity Recognition Using Smartphones
+
+# Files
++ CodeBook.md is the code book describing the data, the variables and transformations used to clean the raw data
+
++ run.analysis.R performs the data cleaning as described in the course project's assigment:
+1. Merges the training and the test sets to create one data set.
+2. Extracts only the measurements on the mean and standard deviation for each measurement.
+3. Uses descriptive activity names to name the activities in the data set
+4. Appropriately labels the data set with descriptive variable names.
+5. From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+
++ tidydata.txt is the exported final data and the product of run.analysis.R 
